@@ -1,0 +1,28 @@
+{
+  "expo": {
+    "name": "Taskly",
+    "slug": "Taskly",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/notepad.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/notepad.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/notepad.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "web": {
+      "favicon": "./assets/notepad.png"
+    }
+  }
+}
