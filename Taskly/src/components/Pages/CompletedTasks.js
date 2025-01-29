@@ -57,7 +57,7 @@ function CompletedTasksScreen({ route, navigation }) {
         onPress={() => handleDelete(item.id)}
       >
         <Image
-          source={require("./assets/trash.png")}
+          source={require("../../assets/trash.png")}
           style={styles.trashIcon}
         />
       </TouchableOpacity>
@@ -80,7 +80,7 @@ function CompletedTasksScreen({ route, navigation }) {
       ) : (
         <FlatList
           data={completedTasks}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item) => item.id.toString()} // Ensuring unique keys
           renderItem={renderCompletedTask}
           contentContainerStyle={styles.completedTaskList}
         />
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   roundedBox: {
-    width: 365,
+    width: 320,
     height: 80,
     borderRadius: 15,
     margin: 10,
@@ -114,9 +114,10 @@ const styles = StyleSheet.create({
     marginLeft: 1,
   },
   innerTextBox: {
-    width: 220,
+    width: 210,
     height: 50,
-    right: 60,
+    right: 40,
+    backgroundColor: "#B3B7EE",
     borderRadius: 10,
     justifyContent: "center",
     padding: 10,

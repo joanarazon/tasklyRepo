@@ -11,9 +11,8 @@ import {
   Animated,
   ScrollView,
 } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import CompletedTasksScreen from "./CompletedTasksScreen";
+import CompletedTasks from "./CompletedTasks";
 import { useTheme, ThemeProvider } from "./ThemeContext";
 
 const Stack = createStackNavigator();
@@ -113,7 +112,22 @@ function MainScreen({ navigation }) {
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={[styles.box, { backgroundColor: colors.box }]} />
       <View style={[styles.box2, { backgroundColor: colors.box2 }]} />
-
+      <View style={styles.searchContainer}>
+        <TextInput
+          style={[
+            styles.searchInput,
+            {
+              color: colors.text,
+              borderColor: colors.box,
+              backgroundColor: colors.inputBackground,
+            },
+          ]}
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          placeholder="Search tasks"
+          placeholderTextColor={isDarkMode ? "#ccc" : "#999"}
+        />
+      </View>
       <View style={styles.addTaskContainer}>
         <TextInput
           style={[
@@ -137,23 +151,6 @@ function MainScreen({ navigation }) {
             Add Task
           </Text>
         </TouchableOpacity>
-      </View>
-
-      <View style={styles.searchContainer}>
-        <TextInput
-          style={[
-            styles.searchInput,
-            {
-              color: colors.text,
-              borderColor: colors.box,
-              backgroundColor: colors.inputBackground,
-            },
-          ]}
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          placeholder="Search tasks"
-          placeholderTextColor={isDarkMode ? "#ccc" : "#999"}
-        />
       </View>
 
       <View style={styles.taskListContainer}>
@@ -194,7 +191,7 @@ function MainScreen({ navigation }) {
                 onPress={() => handleEdit(item.id)}
               >
                 <Image
-                  source={require("./assets/pencil.png")}
+                  source={require("../../assets/pencil.png")}
                   style={styles.pencilIcon}
                 />
               </TouchableOpacity>
@@ -203,7 +200,7 @@ function MainScreen({ navigation }) {
                 onPress={() => handleDelete(item.id)}
               >
                 <Image
-                  source={require("./assets/trash.png")}
+                  source={require("../../assets/trash.png")}
                   style={styles.trashIcon}
                 />
               </TouchableOpacity>
@@ -212,7 +209,7 @@ function MainScreen({ navigation }) {
                 onPress={() => handleDone(item.id)}
               >
                 <Image
-                  source={require("./assets/done.png")}
+                  source={require("../../assets/done.png")}
                   style={styles.doneIcon}
                 />
               </TouchableOpacity>
@@ -224,7 +221,7 @@ function MainScreen({ navigation }) {
 
       <View style={styles.notepadContainer}>
         <Image
-          source={require("./assets/notepad.png")}
+          source={require("../../assets/notepad.png")}
           style={styles.notepadIcon}
         />
       </View>
@@ -234,7 +231,7 @@ function MainScreen({ navigation }) {
         onPress={toggleSettings}
       >
         <Image
-          source={require("./assets/burger-bar.png")}
+          source={require("../../assets/burger-bar.png")}
           style={styles.burgerIcon}
         />
       </TouchableOpacity>
@@ -267,7 +264,7 @@ function MainScreen({ navigation }) {
         }
       >
         <Image
-          source={require("./assets/checked.png")}
+          source={require("../../assets/checked.png")}
           style={styles.completedIcon}
         />
       </TouchableOpacity>
@@ -281,20 +278,18 @@ function MainScreen({ navigation }) {
 export default function App() {
   return (
     <ThemeProvider>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Main">
-          <Stack.Screen
-            name="Main"
-            component={MainScreen}
-            options={{ title: "Task Manager", headerShown: false }}
-          />
-          <Stack.Screen
-            name="CompletedTasks"
-            component={CompletedTasksScreen}
-            options={{ title: "Completed Tasks" }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <Stack.Navigator initialRouteName="Main">
+        <Stack.Screen
+          name="Main"
+          component={MainScreen}
+          options={{ title: "Task Manager", headerShown: false }}
+        />
+        <Stack.Screen
+          name="CompletedTasks"
+          component={CompletedTasks}
+          options={{ title: "Completed Tasks" }}
+        />
+      </Stack.Navigator>
     </ThemeProvider>
   );
 }
@@ -368,6 +363,7 @@ const styles = StyleSheet.create({
   searchContainer: {
     width: "95%",
     marginVertical: 10,
+    top: 60,
   },
   searchInput: {
     height: 40,
@@ -377,7 +373,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   roundedBox: {
-    width: 378,
+    width: 340,
     height: 80,
     backgroundColor: "#000000",
     borderRadius: 15,
@@ -388,7 +384,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   innerTextBox: {
-    width: 220,
+    width: 210,
     height: 50,
     right: 60,
     backgroundColor: "#B3B7EE",
