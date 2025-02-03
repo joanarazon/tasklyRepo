@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -7,27 +7,25 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import { useTheme } from "./ThemeContext"; // Import the useTheme hook
+import { useTheme } from "./ThemeContext";
 
-function CompletedTasksScreen({ route, navigation }) {
+function CompletedTasks({ route, navigation }) {
   const { completedTasks: initialCompletedTasks = [], onDelete } =
     route.params || {};
+  const { isDarkMode } = useTheme();
 
-  const { isDarkMode } = useTheme(); // Get dark mode state
-  const [completedTasks, setCompletedTasks] = useState(initialCompletedTasks); // Local state for completed tasks
+  const [completedTasks, setCompletedTasks] = useState(initialCompletedTasks);
 
-  // Ensure onDelete is defined and is a function
   const handleDelete = (id) => {
     if (typeof onDelete === "function") {
-      onDelete(id); // Call the passed delete function
+      onDelete(id);
     }
-    // Update the local state to reflect the deleted task
     setCompletedTasks((prevTasks) =>
       prevTasks.filter((task) => task.id !== id)
     );
   };
 
-  const renderCompletedTask = ({ item }) => (
+  const renderCompletedTask = ({ item, index }) => (
     <View
       style={[
         styles.roundedBox,
@@ -80,7 +78,9 @@ function CompletedTasksScreen({ route, navigation }) {
       ) : (
         <FlatList
           data={completedTasks}
-          keyExtractor={(item) => item.id.toString()} // Ensuring unique keys
+          keyExtractor={(item, index) =>
+            item.id ? item.id.toString() : `task-${index}`
+          }
           renderItem={renderCompletedTask}
           contentContainerStyle={styles.completedTaskList}
         />
@@ -89,7 +89,7 @@ function CompletedTasksScreen({ route, navigation }) {
   );
 }
 
-export default CompletedTasksScreen;
+export default CompletedTasks;
 
 const styles = StyleSheet.create({
   container: {

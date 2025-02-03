@@ -9,7 +9,6 @@ import {
   TextInput,
   FlatList,
   Animated,
-  ScrollView,
 } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import CompletedTasks from "./CompletedTasks";
@@ -24,7 +23,7 @@ function MainScreen({ navigation }) {
   const [newTaskTitle, setNewTaskTitle] = useState("");
   const [isSettingsVisible, setIsSettingsVisible] = useState(false);
   const [completedTasks, setCompletedTasks] = useState([]);
-  const [searchQuery, setSearchQuery] = useState(""); // State for search query
+  const [searchQuery, setSearchQuery] = useState("");
 
   const slideAnim = useRef(new Animated.Value(-300)).current;
 
@@ -75,14 +74,6 @@ function MainScreen({ navigation }) {
     }
   };
 
-  const setDarkMode = () => {
-    if (!isDarkMode) toggleTheme();
-  };
-
-  const setLightMode = () => {
-    if (isDarkMode) toggleTheme();
-  };
-
   const handleDone = (id) => {
     const completedTask = tasks.find((task) => task.id === id);
     if (completedTask) {
@@ -103,7 +94,6 @@ function MainScreen({ navigation }) {
     return unsubscribe;
   }, [navigation]);
 
-  // Filter tasks based on search query
   const filteredTasks = tasks.filter((task) =>
     task.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -155,7 +145,7 @@ function MainScreen({ navigation }) {
 
       <View style={styles.taskListContainer}>
         <FlatList
-          data={filteredTasks} // Use filtered tasks
+          data={filteredTasks}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <View style={[styles.roundedBox, { backgroundColor: colors.box2 }]}>
@@ -173,7 +163,7 @@ function MainScreen({ navigation }) {
                     }
                     onSubmitEditing={() => handleSave(item.id, item.title)}
                     onBlur={() => handleSave(item.id, item.title)}
-                    autoFocus={true}
+                    autoFocus
                   />
                 ) : (
                   <Text
@@ -219,13 +209,6 @@ function MainScreen({ navigation }) {
         />
       </View>
 
-      <View style={styles.notepadContainer}>
-        <Image
-          source={require("../../assets/notepad.png")}
-          style={styles.notepadIcon}
-        />
-      </View>
-
       <TouchableOpacity
         style={styles.burgerIconContainer}
         onPress={toggleSettings}
@@ -240,14 +223,12 @@ function MainScreen({ navigation }) {
         <Text style={[styles.settingsTitle, { color: colors.text }]}>
           Settings
         </Text>
-
-        <TouchableOpacity onPress={setLightMode}>
+        <TouchableOpacity onPress={() => !isDarkMode && toggleTheme()}>
           <Text style={[styles.settingsOption, { color: colors.text }]}>
             Light Mode
           </Text>
         </TouchableOpacity>
-
-        <TouchableOpacity onPress={setDarkMode}>
+        <TouchableOpacity onPress={() => isDarkMode && toggleTheme()}>
           <Text style={[styles.settingsOption, { color: colors.text }]}>
             Dark Mode
           </Text>
