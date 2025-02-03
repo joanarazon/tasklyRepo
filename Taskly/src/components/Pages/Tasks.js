@@ -223,12 +223,12 @@ function MainScreen({ navigation }) {
         <Text style={[styles.settingsTitle, { color: colors.text }]}>
           Settings
         </Text>
-        <TouchableOpacity onPress={() => !isDarkMode && toggleTheme()}>
+        <TouchableOpacity onPress={() => isDarkMode && toggleTheme()}>
           <Text style={[styles.settingsOption, { color: colors.text }]}>
             Light Mode
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => isDarkMode && toggleTheme()}>
+        <TouchableOpacity onPress={() => !isDarkMode && toggleTheme()}>
           <Text style={[styles.settingsOption, { color: colors.text }]}>
             Dark Mode
           </Text>

@@ -19,10 +19,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/notepad.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.joanarazon.Taskly"
     },
     "web": {
       "favicon": "./assets/notepad.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "d2428d85-a913-4368-a09a-bb7f3d9efd33"
+      }
     }
   }
 }
