@@ -71,15 +71,19 @@ function MainScreen({ navigation }) {
 
   // Add a new task to the list
   const handleAddTask = () => {
-    if (newTaskTitle.trim() !== "") {
-      const newTask = {
-        id: tasks.length + 1, // Assign a new ID based on length
-        title: newTaskTitle,
-        isEditing: false,
-      };
-      setTasks([...tasks, newTask]);
-      setNewTaskTitle(""); // Clear input field after adding task
+    if (newTaskTitle.trim() === "") {
+      alert("Task cannot be empty. Please enter a valid task.");
+      return;
     }
+
+    const newTask = {
+      id: tasks.length + 1, // Assign a new ID based on length
+      title: newTaskTitle,
+      isEditing: false,
+    };
+
+    setTasks([...tasks, newTask]);
+    setNewTaskTitle(""); // Clear input field after adding task
   };
 
   // Mark a task as completed
