@@ -10,21 +10,28 @@ import {
 import { useTheme } from "./ThemeContext";
 
 function CompletedTasks({ route, navigation }) {
+  // Extract completed tasks and onDelete function from route params
   const { completedTasks: initialCompletedTasks = [], onDelete } =
     route.params || {};
+
+  // Get theme mode (dark or light) from ThemeContext
   const { isDarkMode } = useTheme();
 
+  // State to manage the list of completed tasks
   const [completedTasks, setCompletedTasks] = useState(initialCompletedTasks);
 
+  // Function to handle deleting a task
   const handleDelete = (id) => {
     if (typeof onDelete === "function") {
-      onDelete(id);
+      onDelete(id); // Call the passed onDelete function
     }
+    // Remove the deleted task from the local state
     setCompletedTasks((prevTasks) =>
       prevTasks.filter((task) => task.id !== id)
     );
   };
 
+  // Function to render each completed task item
   const renderCompletedTask = ({ item, index }) => (
     <View
       style={[
@@ -43,19 +50,20 @@ function CompletedTasks({ route, navigation }) {
             styles.taskTitleText,
             { color: isDarkMode ? "#DDD" : "#FFFFFF" },
           ]}
-          numberOfLines={2}
-          adjustsFontSizeToFit
+          numberOfLines={2} // Limit text to two lines
+          adjustsFontSizeToFit // Adjust text size to fit within the box
         >
           {item.title}
         </Text>
       </View>
 
+      {/* Button to delete task */}
       <TouchableOpacity
         style={styles.trashIconContainer}
         onPress={() => handleDelete(item.id)}
       >
         <Image
-          source={require("../../assets/trash.png")}
+          source={require("../../assets/trash.png")} // Trash icon image
           style={styles.trashIcon}
         />
       </TouchableOpacity>
@@ -69,6 +77,7 @@ function CompletedTasks({ route, navigation }) {
         { backgroundColor: isDarkMode ? "#222" : "#B3B7EE" },
       ]}
     >
+      {/* Display message if there are no completed tasks */}
       {completedTasks.length === 0 ? (
         <Text
           style={[styles.noTasksText, { color: isDarkMode ? "#AAA" : "#888" }]}
@@ -77,11 +86,11 @@ function CompletedTasks({ route, navigation }) {
         </Text>
       ) : (
         <FlatList
-          data={completedTasks}
+          data={completedTasks} // Provide completed tasks data
           keyExtractor={(item, index) =>
             item.id ? item.id.toString() : `task-${index}`
           }
-          renderItem={renderCompletedTask}
+          renderItem={renderCompletedTask} // Function to render each task
           contentContainerStyle={styles.completedTaskList}
         />
       )}

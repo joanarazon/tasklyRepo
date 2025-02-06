@@ -17,16 +17,20 @@ import { useTheme, ThemeProvider } from "./ThemeContext";
 const Stack = createStackNavigator();
 
 function MainScreen({ navigation }) {
+  // Get theme context values (dark mode, toggle function, and colors)
   const { isDarkMode, toggleTheme, colors } = useTheme();
 
+  // State for managing active and completed tasks
   const [tasks, setTasks] = useState([]);
   const [newTaskTitle, setNewTaskTitle] = useState("");
   const [isSettingsVisible, setIsSettingsVisible] = useState(false);
   const [completedTasks, setCompletedTasks] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
+  // Animated value for sliding settings menu
   const slideAnim = useRef(new Animated.Value(-300)).current;
 
+  // Toggle settings menu visibility with animation
   const toggleSettings = () => {
     setIsSettingsVisible((prevState) => {
       const newState = !prevState;
@@ -39,6 +43,7 @@ function MainScreen({ navigation }) {
     });
   };
 
+  // Enable task editing
   const handleEdit = (id) => {
     setTasks(
       tasks.map((task) =>
@@ -47,6 +52,7 @@ function MainScreen({ navigation }) {
     );
   };
 
+  // Save the edited task
   const handleSave = (id, updatedTitle) => {
     if (updatedTitle.trim() === "") return;
     setTasks(
@@ -58,22 +64,25 @@ function MainScreen({ navigation }) {
     );
   };
 
+  // Delete a task from the list
   const handleDelete = (id) => {
     setTasks(tasks.filter((task) => task.id !== id));
   };
 
+  // Add a new task to the list
   const handleAddTask = () => {
     if (newTaskTitle.trim() !== "") {
       const newTask = {
-        id: tasks.length + 1,
+        id: tasks.length + 1, // Assign a new ID based on length
         title: newTaskTitle,
         isEditing: false,
       };
       setTasks([...tasks, newTask]);
-      setNewTaskTitle("");
+      setNewTaskTitle(""); // Clear input field after adding task
     }
   };
 
+  // Mark a task as completed
   const handleDone = (id) => {
     const completedTask = tasks.find((task) => task.id === id);
     if (completedTask) {
@@ -82,10 +91,12 @@ function MainScreen({ navigation }) {
     }
   };
 
+  // Delete a completed task from the completed list
   const handleDeleteFromCompleted = (id) => {
     setCompletedTasks(completedTasks.filter((task) => task.id !== id));
   };
 
+  // Effect to log when the screen is focused
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       console.log("Screen focused, updating...");
@@ -94,14 +105,18 @@ function MainScreen({ navigation }) {
     return unsubscribe;
   }, [navigation]);
 
+  // Filter tasks based on search query
   const filteredTasks = tasks.filter((task) =>
     task.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
+      {/* Header and background design */}
       <View style={[styles.box, { backgroundColor: colors.box }]} />
       <View style={[styles.box2, { backgroundColor: colors.box2 }]} />
+
+      {/* Search Input */}
       <View style={styles.searchContainer}>
         <TextInput
           style={[
@@ -118,6 +133,8 @@ function MainScreen({ navigation }) {
           placeholderTextColor={isDarkMode ? "#ccc" : "#999"}
         />
       </View>
+
+      {/* Task Input and Add Button */}
       <View style={styles.addTaskContainer}>
         <TextInput
           style={[
@@ -143,6 +160,7 @@ function MainScreen({ navigation }) {
         </TouchableOpacity>
       </View>
 
+      {/* Task List */}
       <View style={styles.taskListContainer}>
         <FlatList
           data={filteredTasks}
@@ -151,6 +169,7 @@ function MainScreen({ navigation }) {
             <View style={[styles.roundedBox, { backgroundColor: colors.box2 }]}>
               <View style={styles.innerTextBox}>
                 {item.isEditing ? (
+                  // Editable text input for task title
                   <TextInput
                     style={[styles.taskTitleTextInput, { color: colors.text }]}
                     value={item.title}
@@ -166,6 +185,7 @@ function MainScreen({ navigation }) {
                     autoFocus
                   />
                 ) : (
+                  // Display task title
                   <Text
                     style={[styles.taskTitleText, { color: colors.text }]}
                     numberOfLines={2}
@@ -176,6 +196,7 @@ function MainScreen({ navigation }) {
                 )}
               </View>
 
+              {/* Action Buttons */}
               <TouchableOpacity
                 style={styles.pencilIconContainer}
                 onPress={() => handleEdit(item.id)}
@@ -209,6 +230,7 @@ function MainScreen({ navigation }) {
         />
       </View>
 
+      {/* Settings Menu */}
       <TouchableOpacity
         style={styles.burgerIconContainer}
         onPress={toggleSettings}
@@ -235,6 +257,7 @@ function MainScreen({ navigation }) {
         </TouchableOpacity>
       </Animated.View>
 
+      {/* Navigate to Completed Tasks */}
       <TouchableOpacity
         style={styles.completedIconContainer}
         onPress={() =>
